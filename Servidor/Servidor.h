@@ -17,6 +17,7 @@
 #include "SocketServidor.h"
 #include "Socket.h"
 #include "Constantes.h"
+#include "AccionesServidor.h"
 
 void nuevoCliente(int servidor, int *clientes, int *nClientes);
 
@@ -24,6 +25,6 @@ int obtenerMaximo(int *tabla, int n);
 
 void compactaClaves(int * tabla, int *n);
 
-iniciarServidor();
+int iniciarServidor();
 
 #endif //SERVIDOR_SERVIDOR_H

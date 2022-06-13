@@ -24,6 +24,7 @@ typedef struct ListaLadrillos {
     struct ladrillo *primero;
     struct ladrillo *ultimo;
     int n;
+    int velocidad;
 } ListaLadrillos;
 
 void iniciar();
@@ -33,5 +34,6 @@ void Imprimir(ListaLadrillos *lista);
 int aleatorio(int min, int max);
 void LlenarLista(ListaLadrillos *lista);
 cJSON *convertirALista(ListaLadrillos *lista);
+void cambiarVelocidad(ListaLadrillos *lista, int velocidad);
 
 #endif //SERVIDOR_LISTALADRILLOS_H

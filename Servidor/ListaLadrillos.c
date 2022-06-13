@@ -9,6 +9,7 @@ void iniciar() {
     lista->primero = NULL;
     lista->ultimo = NULL;
     lista->n = 0;
+    lista->velocidad = 1;
 }
 
 void insertar(ListaLadrillos *lista,int puntuacion, int x, int y, char *tipo, int poder) {
@@ -73,6 +74,27 @@ cJSON *convertirALista(ListaLadrillos *lista) {
     cJSON *json = NULL;
     json = cJSON_CreateObject();
 
+    cJSON *bola = NULL;
+    bola = cJSON_CreateObject();
+
+    cJSON_AddNumberToObject(bola, "x", 0);
+    cJSON_AddNumberToObject(bola, "y", 0);
+    cJSON_AddNumberToObject(bola, "velocidad", lista->velocidad);
+    cJSON_AddNullToObject(bola, "next");
+
+    cJSON *raqueta = NULL;
+    raqueta = cJSON_CreateObject();
+
+    cJSON_AddNumberToObject(raqueta, "x", 0);
+    cJSON_AddNumberToObject(raqueta, "y", 0);
+    cJSON_AddNumberToObject(raqueta, "largo", 0);
+
+    cJSON_AddNumberToObject(json, "accion", 1);
+    cJSON_AddNumberToObject(json, "vida", 0);
+    cJSON_AddNumberToObject(json, "puntos", 0);
+    cJSON_AddItemToObjectCS(json, "bola", bola);
+    cJSON_AddItemToObjectCS(json, "raqueta", raqueta);
+
     Ladrillos *aux = lista->primero;
 
     cJSON *ultimo = NULL;
@@ -122,4 +144,8 @@ cJSON *convertirALista(ListaLadrillos *lista) {
     cJSON_AddNullToObject(head, "next");
 
     return json;
+}
+
+void cambiarVelocidad(ListaLadrillos *lista, int velocidad) {
+    lista->velocidad = velocidad;
 }

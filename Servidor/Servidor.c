@@ -14,6 +14,7 @@ int iniciarServidor(){
     int buffer;
     int maximo;
     int i;
+    int accion;
 
     char cadena[TAM_BUFFER];
 
@@ -70,27 +71,37 @@ int iniciarServidor(){
                     Lee_Socket(socketCliente[i], cadena, longitudCadena);
                     printf("Cliente %d envia %s\n", i + 1, cadena);
 
-                    ///Se envia datos a los clientes observadores
-                    for(int j = 0; j < numeroClientes; j++){
+                    accion = AccionesServidor(cadena);
 
-                        if(i != j){
-                            ///Se envia un entero con la longitud de la cadena (incluido
-                            ///el \0 del final) y la cadena.
+                    if(accion == 1) {
+                        for (int j = 0; j < numeroClientes; j++) {
+                            if (j == i) {
 
-                            ///El entero que se envia por el socket hay que transformarlo
-                            ///a formato de red
-                            auxiliar = htonl(longitudCadena);
+                                ///Envio de la lista de ladrillos
+                                auxiliar = htonl(longitudCadena);
+                                Escribe_Socket(socketCliente[j], (char *) &auxiliar, sizeof(int));
+                                Escribe_Socket(socketCliente[j], cadena, longitudCadena);
 
-                            ///Se envia el entero transformado
-                            Escribe_Socket(socketCliente[j], (char *)&auxiliar, sizeof(int));
-                            printf("Servidor C: Enviado %d a Cliente Observador\n", longitudCadena -1);
-
-                            ///Se envia la cadena recibida
-                            Escribe_Socket(socketCliente[j], cadena, longitudCadena);
-                            printf("Servidor C: Enviado %s a Cliente Observador\n", cadena);
+                            }
                         }
-                    }
 
+                    } else{
+
+                        ///Se envia datos a los clientes observadores
+                        for(int j = 0; j < numeroClientes; j++){
+
+                            if(i != j){
+
+                                ///Se envia a los observadores el entero que indica
+                                auxiliar = htonl(longitudCadena);
+                                Escribe_Socket(socketCliente[j], (char *)&auxiliar, sizeof(int));
+                                Escribe_Socket(socketCliente[j], cadena, longitudCadena);
+
+                            }
+                        }
+
+                    }
+                    
                 } else{
                     printf("Cliente %d ha cerrado la conexion\n", i+1);
                     socketCliente[i] = -1;
