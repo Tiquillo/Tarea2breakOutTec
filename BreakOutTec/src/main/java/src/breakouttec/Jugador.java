@@ -30,7 +30,6 @@ public class Jugador extends Application {
 
     private Jugador() {
 
-
         LadList ladrillosList = new LadList();
         Integer x = 3;
         Integer y = 55;
