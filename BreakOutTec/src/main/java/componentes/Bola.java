@@ -2,6 +2,9 @@ package componentes;
 
 import java.util.Objects;
 
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
+
 public class Bola {
     private final Integer velocidad = 5;
     private Float direccion;
@@ -10,15 +13,24 @@ public class Bola {
     private Boolean colision = false;
     private Float[] posicion = {0f,0f};
 
-    private final Integer radioBola = 5;
+    private final Integer radioBola = 10;
 
-    private static final Integer anchoCaja = 20;
-    private static final Integer altoCaja = 10;
+    private static final Integer anchoCaja = 50;
+    private static final Integer altoCaja = 15;
 
-    private static final Integer anchoPantalla = 600;
-    private static final Integer altoPantalla = 400;
+    private static final Integer anchoPantalla = 800;
+    private static final Integer altoPantalla = 600;
 
-    public Bola() {}
+    private Circle bola;
+
+    public Bola() {
+
+        bola = new Circle(400, 450, radioBola);
+        bola.setFill(Color.WHITE);
+        posicion[0] = (float) bola.getCenterX();
+        posicion[1] = (float) bola.getCenterY();
+
+    }
 
     private void Rebote(Float[] posCaja) {
         if (posCaja[1] < posicion[1] + radioBola && posicion[1] < posCaja[1] + altoCaja) {
@@ -145,5 +157,9 @@ public class Bola {
 
     public void setPosicion(Float[] newPosicion) {
         posicion = newPosicion;
+    }
+
+    public Circle getBola() {
+        return bola;
     }
 }

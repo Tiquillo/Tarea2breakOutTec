@@ -50,5 +50,12 @@ public class Raqueta {
     public void setSpeed(Integer speed) {
         this.speed = speed;
     }
+
+    public float[] getPosicion(){
+        float[] posicion = new float[2];
+        posicion[0] = (float) raqueta.getX();
+        posicion[1] = (float) raqueta.getY();
+        return posicion;
+    }
     
 }

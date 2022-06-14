@@ -22,6 +22,8 @@ public class Jugador extends Application {
     private Font font = new Font("Liberation Sans Italic", 16);
     private Group group = new Group();
 
+    private ListaBolas listaBolas;
+
     private Integer score = 0;
 
     private Raqueta raq = Raqueta.getInstance();
@@ -87,6 +89,11 @@ public class Jugador extends Application {
             }
         }
 
+        listaBolas = new ListaBolas();
+        Bola principal = new Bola();
+        listaBolas.Insertar(principal);
+        group.getChildren().add(principal.getBola());
+
     }
 
     public void start(Stage win) {
@@ -134,5 +141,13 @@ public class Jugador extends Application {
             }
         });
 
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public ListaBolas getListaBolas(){
+        return listaBolas;
     }
 }
