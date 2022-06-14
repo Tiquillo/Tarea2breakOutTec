@@ -8,18 +8,15 @@ int main (){
     //iniciarServidor();
 
     cJSON *json = NULL;
-    json = cJSON_CreateObject();
+    char* a = iniciarBricks(1);
+    printf("%s\n", a);
 
+    printf("%d\n", strlen(a) + 1);
 
-    ListaLadrillos *lista = malloc(sizeof(ListaLadrillos));
-    iniciar(lista);
-    LlenarLista(lista);
+    int b = htonl(a);
 
-    json = convertirALista(lista);
+    printf("%d\n", b);
 
-    char *json_string = cJSON_Print(json);
-
-    printf("%s\n", json_string);
 
 
 }

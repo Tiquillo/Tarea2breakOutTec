@@ -12,16 +12,6 @@ int AccionesServidor( char *Datos) {
 
     if(n == 1) {
 
-        ListaLadrillos *lista = malloc(sizeof(ListaLadrillos));
-        iniciar(lista);
-        LlenarLista(lista);
-
-        json = convertirALista(lista);
-
-        char *json_string = cJSON_Print(json);
-
-        strcpy(Datos, json_string);
-
         return 1;
 
     } else if(n == 2) {
@@ -30,7 +20,33 @@ int AccionesServidor( char *Datos) {
 
     } else if(n == 3) {
 
-        velocidad += 1;
+        return 1;
+    }
+
+    return 0;
+
+
+}
+
+char *iniciarBricks(int accion) {
+
+    cJSON *json = NULL;
+
+    if(accion == 1) {
+
+        ListaLadrillos *lista = malloc(sizeof(ListaLadrillos));
+        iniciar(lista);
+        LlenarLista(lista);
+
+        json = convertirALista(lista);
+
+        char *json_string = cJSON_PrintUnformatted(json);
+
+        return json_string;
+
+    } else if(accion == 3) {
+
+        int velocidad = 1;
 
         ListaLadrillos *lista = malloc(sizeof(ListaLadrillos));
         iniciar(lista);
@@ -41,14 +57,9 @@ int AccionesServidor( char *Datos) {
 
         json = convertirALista(lista);
 
-        char *json_string = cJSON_Print(json);
+        char *json_string = cJSON_PrintUnformatted(json);
 
-        strcpy(Datos, json_string);
-
-        return 1;
+        return json_string;
     }
-
-    return 0;
-
 
 }

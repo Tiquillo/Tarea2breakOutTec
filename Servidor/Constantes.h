@@ -7,7 +7,7 @@
 
 #define PUERTO 8080
 #define MAX_CLIENTES 5
-#define TAM_BUFFER 1080
+#define TAM_BUFFER 1080000
 
 #define PTSROJO = 400
 #define PTSNARANJA = 300

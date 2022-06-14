@@ -13,8 +13,10 @@
 #include "ListaLadrillos.h"
 #include <string.h>
 
-int velocidad = 1;
+//int velocidad = 1;
 
 int AccionesServidor( char *Datos);
+
+char* iniciarBricks(int accion);
 
 #endif //SERVIDOR_ACCIONESSERVIDOR_H

@@ -17,6 +17,8 @@ int iniciarServidor(){
     int accion;
 
     char cadena[TAM_BUFFER];
+    char *ladrillos;
+    int largoLadrillos;
 
     int auxiliar;
     int longitudCadena;
@@ -64,6 +66,7 @@ int iniciarServidor(){
 
                 if((Lee_Socket(socketCliente[i], (char *)&buffer, sizeof(int)) > 0)){
 
+
                     ///El entero recibido hay que transformalo de formato de red a
                     ///formato de hardware.
                     longitudCadena = ntohl(buffer);
@@ -73,17 +76,18 @@ int iniciarServidor(){
 
                     accion = AccionesServidor(cadena);
 
-                    if(accion == 1) {
-                        for (int j = 0; j < numeroClientes; j++) {
-                            if (j == i) {
+                    if(accion != 2) {
 
-                                ///Envio de la lista de ladrillos
-                                auxiliar = htonl(longitudCadena);
-                                Escribe_Socket(socketCliente[j], (char *) &auxiliar, sizeof(int));
-                                Escribe_Socket(socketCliente[j], cadena, longitudCadena);
+                        ///Envio de la lista de ladrillos
+                        ladrillos = iniciarBricks(accion);
+                        printf("%lu\n", strlen(ladrillos));
+                        largoLadrillos = htonl(strlen(ladrillos)+1 );
+                        printf("bricks enviados: %s\n",ladrillos);
+                        printf("bricks enviados en formato de red: %d\n", largoLadrillos);
+                        Escribe_Socket(socketCliente[i], (char *)&largoLadrillos, sizeof(int));
+                        Escribe_Socket(socketCliente[i], ladrillos, largoLadrillos);
+                        free(ladrillos);
 
-                            }
-                        }
 
                     } else{
 
@@ -101,7 +105,7 @@ int iniciarServidor(){
                         }
 
                     }
-                    
+
                 } else{
                     printf("Cliente %d ha cerrado la conexion\n", i+1);
                     socketCliente[i] = -1;
