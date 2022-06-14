@@ -28,6 +28,8 @@ public class Jugador extends Application {
 
     private Raqueta raq = Raqueta.getInstance();
 
+    private Boolean moviendo = false;
+
     public static Jugador getInstance() {
         if (instance == null) {
             instance = new Jugador();
@@ -91,6 +93,7 @@ public class Jugador extends Application {
 
         listaBolas = new ListaBolas();
         Bola principal = new Bola();
+        principal.setDireccion(270f);
         listaBolas.Insertar(principal);
         group.getChildren().add(principal.getBola());
 
@@ -137,6 +140,10 @@ public class Jugador extends Application {
                 } else if (event.getCode() == javafx.scene.input.KeyCode.D) {
                     //System.out.println("Derecha");
                     raq.moverDerecha();
+                } else if (event.getCode() == javafx.scene.input.KeyCode.SPACE) {
+                    //System.out.println("Space");
+                    moviendo = true;
+                    //Thread thread = new Thread(listaBolas.getBola(0).Mover(group));
                 }
             }
         });

@@ -21,7 +21,7 @@ public class Bola {
     private static final Integer anchoPantalla = 800;
     private static final Integer altoPantalla = 600;
 
-    private Circle bola;
+    private final Circle bola;
 
     public Bola() {
 
