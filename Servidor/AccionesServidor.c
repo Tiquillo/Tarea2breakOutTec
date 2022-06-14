@@ -4,6 +4,8 @@
 
 #include "AccionesServidor.h"
 
+int velocidad = 1;
+
 int AccionesServidor( char *Datos) {
 
     cJSON *json = cJSON_Parse(Datos);
@@ -38,15 +40,18 @@ char *iniciarBricks(int accion) {
         iniciar(lista);
         LlenarLista(lista);
 
-        json = convertirALista(lista);
+        json = convertirALista(lista,velocidad);
 
         char *json_string = cJSON_PrintUnformatted(json);
+
+        free(lista);
+        free(json);
 
         return json_string;
 
     } else if(accion == 3) {
 
-        int velocidad = 1;
+        velocidad++;
 
         ListaLadrillos *lista = malloc(sizeof(ListaLadrillos));
         iniciar(lista);
@@ -55,9 +60,12 @@ char *iniciarBricks(int accion) {
 
         LlenarLista(lista);
 
-        json = convertirALista(lista);
+        json = convertirALista(lista, velocidad);
 
         char *json_string = cJSON_PrintUnformatted(json);
+
+        free(lista);
+        free(json);
 
         return json_string;
     }

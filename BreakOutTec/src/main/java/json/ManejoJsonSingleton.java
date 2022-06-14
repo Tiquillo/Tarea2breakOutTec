@@ -8,12 +8,12 @@ import org.json.simple.parser.ParseException;
 
 public class ManejoJsonSingleton {
 
-    Integer i;
-    Integer size;
-    Integer bolas = 0;
-    String datos;
-    JSONObject json;
-    JSONParser parser;
+    public Integer i;
+    public Integer size;
+    public Integer bolas = 0;
+    public String datos;
+    public JSONObject json;
+    public JSONParser parser;
 
 
     static public ManejoJsonSingleton singleton = null;
@@ -35,7 +35,15 @@ public class ManejoJsonSingleton {
         this.json = (JSONObject) parser.parse(datos);
         String temp = (String) json.get("largo");
         this.size = Integer.parseInt(temp);
+        this.i = 0;
+    }
 
+    /**
+     * Resetea el json con los datos
+     * @throws ParseException
+     */
+    public void ResetJson() throws ParseException {
+        this.json = (JSONObject) parser.parse(datos);
     }
 
     /**
@@ -44,13 +52,13 @@ public class ManejoJsonSingleton {
      */
     public Integer getPower() {
 
-        if(i >= size){
+        if(i > size){
             return -1;
         }
 
         String labrillo = i.toString();
         JSONObject temporal = (JSONObject) json.get(labrillo);
-        Long poder = (Long) temporal.get("power");
+        Long poder = (Long) temporal.get("poder");
         return poder.intValue();
     }
 
@@ -60,7 +68,7 @@ public class ManejoJsonSingleton {
      */
     public Integer getPts() {
 
-        if(i >= size){
+        if(i > size){
             return -1;
         }
 
@@ -71,15 +79,39 @@ public class ManejoJsonSingleton {
     }
 
     /**
+     * Obtiene la pos x del ladrillo
+     * @return Integer
+     */
+    public Integer getXPos(){
+        if(i > size){
+            return -1;
+        }
+        String labrillo = i.toString();
+        JSONObject temporal = (JSONObject) json.get(labrillo);
+        Long xPos = (Long) temporal.get("x");
+        return xPos.intValue();
+    }
+
+    /**
+     * Obtiene la pos y del ladrillo
+     * @return Integer
+     */
+    public Integer getYPos() {
+        if (i > size) {
+            return -1;
+        }
+        String labrillo = i.toString();
+        JSONObject temporal = (JSONObject) json.get(labrillo);
+        Long yPos = (Long) temporal.get("y");
+        return yPos.intValue();
+    }
+
+    /**
      * Aumenta la posicion del puntero de los ladrillos del json, esto es para los metodos getPower y getPts. Simula el recorrido de los ladrillos paso a paso.
      */
     public void Next() {
 
-        if (i >= size) {
-            i = 0;
-        } else {
-            i++;
-        }
+        this.i++;
 
     }
 
@@ -229,6 +261,7 @@ public class ManejoJsonSingleton {
      */
 
     public void RemoveLadrillo(Integer ladrillo) {
+
         json.remove(ladrillo.toString());
 
         for (Integer i = ladrillo; i < this.size; i++) {
@@ -262,10 +295,16 @@ public class ManejoJsonSingleton {
      * @param action
      */
     public void AddAction(Integer action){
-        json.put("action", action);
+
+        this.json.put("accion", action);
     }
 
-
+    /**
+     * Resetea el puntero del json
+     */
+    public void ResetI(){
+        this.i = 0;
+    }
 
 
 

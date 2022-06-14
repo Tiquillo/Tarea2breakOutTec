@@ -76,6 +76,8 @@ int iniciarServidor(){
 
                     accion = AccionesServidor(cadena);
 
+                    printf("Accion: %d\n", accion);
+
                     if(accion != 2) {
 
                         ///Envio de la lista de ladrillos

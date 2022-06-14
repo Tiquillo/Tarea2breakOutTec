@@ -2,6 +2,7 @@
 // Created by david on 13/06/22.
 //
 
+#include <time.h>
 #include "ListaLadrillos.h"
 
 void iniciar() {
@@ -44,7 +45,8 @@ void Imprimir(ListaLadrillos *lista) {
 
 void LlenarLista(ListaLadrillos *lista) {
 
-    srand(getpid());
+    srand(time(NULL));
+
     int poderAleatorio;
 
     int x = 12;
@@ -78,10 +80,11 @@ void LlenarLista(ListaLadrillos *lista) {
 }
 
 int aleatorio(int min, int max) {
+
     return min + rand() / (RAND_MAX / (max - min + 1) + 1);
 }
 
-cJSON *convertirALista(ListaLadrillos *lista) {
+cJSON *convertirALista(ListaLadrillos *lista, int velocidad) {
 
     cJSON *json = NULL;
     json = cJSON_CreateObject();

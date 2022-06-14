@@ -33,7 +33,7 @@ struct ladrillo obtenerPrimero(ListaLadrillos *lista);
 void Imprimir(ListaLadrillos *lista);
 int aleatorio(int min, int max);
 void LlenarLista(ListaLadrillos *lista);
-cJSON *convertirALista(ListaLadrillos *lista);
+cJSON *convertirALista(ListaLadrillos *lista,int velocidad);
 void cambiarVelocidad(ListaLadrillos *lista, int velocidad);
 
 #endif //SERVIDOR_LISTALADRILLOS_H

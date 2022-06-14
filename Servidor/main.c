@@ -5,17 +5,17 @@
 
 int main (){
 
-    //iniciarServidor();
+    iniciarServidor();
 
-    cJSON *json = NULL;
-    char* a = iniciarBricks(1);
-    printf("%s\n", a);
-
-    printf("%d\n", strlen(a) + 1);
-
-    int b = htonl(a);
-
-    printf("%d\n", b);
+//    cJSON *json = NULL;
+//    char* a = iniciarBricks(1);
+//    printf("%s\n", a);
+//
+//    printf("%d\n", strlen(a) + 1);
+//
+//    int b = htonl(a);
+//
+//    printf("%d\n", b);
 
 
 
