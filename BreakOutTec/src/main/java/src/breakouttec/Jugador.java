@@ -1,6 +1,9 @@
 package src.breakouttec;
 
+import componentes.*;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,7 +22,11 @@ public class Jugador extends Application {
     private Font font = new Font("Liberation Sans Italic", 16);
     private Group group = new Group();
 
+    private ListaBolas listaBolas;
+
     private Integer score = 0;
+
+    private Raqueta raq = Raqueta.getInstance();
 
     public static Jugador getInstance() {
         if (instance == null) {
@@ -31,55 +38,60 @@ public class Jugador extends Application {
     private Jugador() {
 
         LadList ladrillosList = new LadList();
-        Integer x = 3;
+        Integer x = 12;
         Integer y = 55;
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladRojo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladNaranja(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladAmarillo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladVerde(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
+
+        listaBolas = new ListaBolas();
+        Bola principal = new Bola();
+        listaBolas.Insertar(principal);
+        group.getChildren().add(principal.getBola());
 
     }
 
@@ -97,18 +109,44 @@ public class Jugador extends Application {
         score.setFont(font);
         group.getChildren().add(score);
 
-//        Button btn = new Button("Jugador");
-//        btn.setLayoutX(325);
-//        btn.setLayoutY(190);
-//        btn.setMinWidth(150);
-//        btn.setMinHeight(100);
-//        group.getChildren().add(btn);
-//        btn.setOnAction(e -> {
-//            this.score += 1;
-//
-//        });
+        group.getChildren().add(raq.getRaqueta());
+
+        Button btn = new Button("Salir");
+        btn.setLayoutX(725);
+        btn.setLayoutY(565);
+        btn.setMinWidth(70);
+        btn.setMinHeight(30);
+        group.getChildren().add(btn);
+
+        CheckEvent();
 
         win.setScene(scene);
         win.show();
+    }
+
+    private void CheckEvent(){
+
+        group.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
+            @Override
+            public void handle(javafx.scene.input.KeyEvent event) {
+                //System.out.println(event.getCode());
+                if (event.getCode() == javafx.scene.input.KeyCode.A) {
+                    //System.out.println("Izquierda");
+                    raq.moverIzquierda();
+                } else if (event.getCode() == javafx.scene.input.KeyCode.D) {
+                    //System.out.println("Derecha");
+                    raq.moverDerecha();
+                }
+            }
+        });
+
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public ListaBolas getListaBolas(){
+        return listaBolas;
     }
 }
