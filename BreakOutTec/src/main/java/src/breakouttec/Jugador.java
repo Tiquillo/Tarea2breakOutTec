@@ -39,52 +39,52 @@ public class Jugador extends Application {
 
 
         LadList ladrillosList = new LadList();
-        Integer x = 3;
+        Integer x = 12;
         Integer y = 55;
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladRojo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladNaranja(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladAmarillo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 30; i++) {
+        for (Integer i = 0; i < 14; i++) {
             ladrillos temp = new ladVerde(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+53 < 795){
-                x +=53;
+            if (x+112 < 795){
+                x +=112;
             } else {
-                x = 3;
+                x = 12;
                 y += 20;
             }
         }

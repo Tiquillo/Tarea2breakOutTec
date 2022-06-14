@@ -17,7 +17,7 @@ public class ladrillos {
         this.x = x;
         this.y = y;
 
-        this.ladrillo = new Rectangle(x, y, 50, 15);
+        this.ladrillo = new Rectangle(x, y, 100, 15);
         this.ladrillo.setFill(color);
     }
 
