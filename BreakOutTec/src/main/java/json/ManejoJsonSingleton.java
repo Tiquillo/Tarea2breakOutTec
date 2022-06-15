@@ -215,6 +215,34 @@ public class ManejoJsonSingleton {
     }
 
     /**
+     * Obtiene la posicion x de la raqueta en el json
+     * @return Integer
+     */
+    public Integer GetXRaqueta(){
+        JSONObject temp = (JSONObject) json.get("raqueta");
+        Long x = (Long) temp.get("x");
+        return x.intValue();
+    }
+    /**
+     * Obtiene la posicion y de la raqueta en el json
+     * @return Integer
+     */
+    public Integer GetYRaqueta(){
+        JSONObject temp = (JSONObject) json.get("raqueta");
+        Long y = (Long) temp.get("y");
+        return y.intValue();
+    }
+    /**
+     * Obtiene el largo de la raqueta en el json
+     * @return Integer
+     */
+    public Integer GetLargoRaqueta(){
+        JSONObject temp = (JSONObject) json.get("raqueta");
+        Long largo = (Long) temp.get("largo");
+        return largo.intValue();
+    }
+
+    /**
      *  Setea las vidas en el json
      * @param vidas Integer
      */
