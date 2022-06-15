@@ -204,7 +204,7 @@ public class Jugador extends Application {
 
                     listaBolas.getBola(i).Mover(ladrillosList, raq);
 
-                    if (listaBolas.getBola(i).getPosicion()[1] > 500) {
+                    if (listaBolas.getBola(i).getPosicion()[1] > 505) {
                         //TODO destruir la bola
                         //listaBolas.Eliminar(i);
                         //corriendo = false;

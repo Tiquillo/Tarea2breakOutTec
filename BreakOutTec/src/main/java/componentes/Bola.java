@@ -119,7 +119,6 @@ public class Bola {
 
         if  (!Objects.equals(direccionRebote, "\0")) {
             this.colision = true;
-            System.out.println("Colision " + direccionRebote);
             CambiarDireccion();
         }
     }
