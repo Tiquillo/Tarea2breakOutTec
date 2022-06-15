@@ -361,13 +361,28 @@ public class Jugador extends Application {
                     manejoJson.UpdateBall(Math.round(listaBolas.getBola(i).getPosicion()[0]),Math.round(listaBolas.getBola(i).getPosicion()[1]), i);
                 }
                 cliente.sentString(manejoJson.GetJsonString());
+
+                if (CheckLadrillos()) {
+                    try {
+                        manejoJson.ResetJson();
+                        Reset();
+                        nivel ++;
+                        levelcount.setText(String.valueOf(nivel));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
         thread.start();
 
     }
 
-    public boolean CheckBolas(){
+    /**
+     * Revisa si todas las bolas están activas en el juego.
+     * @return
+     */
+    public Boolean CheckBolas(){
 
         for (Integer i = 0; i < listaBolas.getCantidad(); i++) {
             if (listaBolas.getBola(i).isActive()) {
@@ -378,46 +393,96 @@ public class Jugador extends Application {
 
     }
 
+    public void Reset(){
+        vidas = 3;
+        livescount.setText(String.valueOf(vidas));
+        manejoJson.SetVidas(vidas);
+        listaBolas.getBola(0).getBola().setCenterX(400);
+        listaBolas.getBola(0).getBola().setCenterY(380);
+        listaBolas.getBola(0).setDireccion(270f);
+        Float[] posicion = {Float.valueOf(400), Float.valueOf(280)};
+        listaBolas.getBola(0).setPosicion(posicion);
+        listaBolas.getBola(0).setDireccion(-270f);
+        Integer bolaX = Math.round(listaBolas.getBola(0).getPosicion()[0]);
+        Integer bolaY = Math.round(listaBolas.getBola(0).getPosicion()[1]);
+        manejoJson.UpdateBall(bolaX, bolaY, 0);
+        listaBolas.getBola(0).setActive(true);
+
+        for (Integer i = 0; i < ManejoJsonSingleton.getInstance().size; i++) {
+            Ladrillos temp = ladrillosList.Acceder(i);
+            temp.getLadrillo().setX(ManejoJsonSingleton.getInstance().getXPos());
+            temp.getLadrillo().setY(ManejoJsonSingleton.getInstance().getYPos());
+
+
+            ManejoJsonSingleton.getInstance().Next();
+        }
+        ManejoJsonSingleton.getInstance().ResetI();
+
+
+    }
+
+    /**
+     * Revisa si todos los ladrillos están destruidos.
+     * @return
+     */
+    public Boolean CheckLadrillos(){
+
+        for (Integer i = 0; i < ladrillosList.getSize(); i++) {
+            if (ladrillosList.Acceder(i).getLadrillo().getX() != -100) {
+                return false;
+            }
+        }
+        return true;
+
+    }
+
+    /**
+     * Incrementa la puntuación del jugador.
+     * @param pts
+     */
     public void IncScore(Integer pts){
         score += pts;
         scoretxt.setText(String.valueOf(score));
         manejoJson.SetPuntos(score);
     }
 
+    /**
+     * Incrementa la vida del jugador.
+     */
     public void IncLives(){
         vidas += 1;
         livescount.setText(String.valueOf(vidas));
         manejoJson.SetVidas(vidas);
     }
 
+    /**
+     * Incrementa el nivel del jugador.
+     */
     public void IncLevel(){
         nivel += 1;
         levelcount.setText(String.valueOf(nivel));
     }
 
+
+    /**
+     * Incrementa la velocidad de la bola
+     */
     public void IncSpeed(){
         velocidad += 1;
         speed.setText(String.valueOf(velocidad));
     }
 
+    /**
+     * Reduce la velocidad de la bola
+     */
     public void DecSpeed(){
         velocidad -= 1;
         speed.setText(String.valueOf(velocidad));
     }
 
-    public void SetPoder(String poder){
-        this.poder = poder;
-        power.setText(poder);
-    }
-
-
     /**
-        * getters y setters
+        * Getters y Setters para las listas de ladrillos y bolas, junto con los componentes.
      */
-    public Group getGroup() {
-        return group;
-    }
-
     public ListaBolas getListaBolas(){
         return listaBolas;
     }

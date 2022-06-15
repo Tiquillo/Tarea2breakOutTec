@@ -1,7 +1,6 @@
 package json;
 
-import java.lang.*;
-import org.json.simple.*;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -171,8 +170,12 @@ public class ManejoJsonSingleton {
     public void UpdatePosXBrick(Integer x, Integer pos) {
         String posSTR = pos.toString();
         JSONObject temp = (JSONObject) json.get(posSTR);
-        temp.put("x", x);
-        json.put(posSTR, temp);
+        try {
+            temp.put("x", x);
+            json.put(posSTR, temp);
+        } catch (Exception NullPointerException) {
+            System.out.println("Error al actualizar la posicion x del ladrillo");
+        }
     }
 
     /**

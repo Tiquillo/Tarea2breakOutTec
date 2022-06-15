@@ -26,6 +26,8 @@ public class Espectador extends Application {
 
     private Scene scene = new Scene(group, 800, 600, Color.BLACK);
 
+    private Raqueta raq = Raqueta.getInstance();
+
     LadList ladrillosList = new LadList();
 
     ListaBolas listaBolas = new ListaBolas();
@@ -84,7 +86,7 @@ public class Espectador extends Application {
             group.getChildren().add(temp.getBola());
         }
 
-        group.getChildren().add(Raqueta.getInstance().getRaqueta());
+        group.getChildren().add(raq.getRaqueta());
 
         //Agregar lo que tenga que ir en el monitor, hay que poner un boton que sino no sirve por alguna razon
 
@@ -110,12 +112,13 @@ public class Espectador extends Application {
         Thread thread = new Thread(() -> {
 
             Integer i = 0;
-//            final JSONObject json = new JSONObject();
-//            json.put("tipo", 1);
-//            String jsonString = json.toJSONString();
-//            //observador.sentString(jsonString);
             String respuesta = observador.receiveString();
             System.out.println("Primera respuesta: " + respuesta);
+            try {
+                ManejoJsonSingleton.getInstance().setDatos(respuesta);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
 
             // aquí hice lo mismo que hizo david en prueba sockets
             try {
@@ -134,23 +137,25 @@ public class Espectador extends Application {
                 System.out.println("Respuesta: " + respuesta);
 
                 for (i = 0; i < ManejoJsonSingleton.getInstance().size; i++) {
-                    System.out.println("----------------------------------------------------");
-                    System.out.println(i);
-                    System.out.println(ManejoJsonSingleton.getInstance().getXPos());
-                    System.out.println(ManejoJsonSingleton.getInstance().getYPos());
-                    System.out.println(ManejoJsonSingleton.getInstance().getPower());
-                    System.out.println(ManejoJsonSingleton.getInstance().getPts());
-                    System.out.println("----------------------------------------------------");
+                    Ladrillos temp = ladrillosList.Acceder(i);
+                    temp.getLadrillo().setX(ManejoJsonSingleton.getInstance().getXPos());
+                    temp.getLadrillo().setY(ManejoJsonSingleton.getInstance().getYPos());
 
-                    // aquí hice lo mismo que david, pero usando un for
-                    // tengo entendido que esto coloca la posición de los objetos en los objetos obteniéndola
-                    // desde los sockekts
+                    UpdateRaq();
 
                     ManejoJsonSingleton.getInstance().Next();
                 }
-                ManejoJsonSingleton.getInstance().Reset();
+
+                ManejoJsonSingleton.getInstance().ResetI();
             }
         });
+        thread.start();
+    }
+
+    public void UpdateRaq(){
+        raq.getRaqueta().setWidth(ManejoJsonSingleton.getInstance().GetLargoRaqueta());
+        raq.getRaqueta().setX(ManejoJsonSingleton.getInstance().GetXRaqueta());
+        raq.getRaqueta().setY(ManejoJsonSingleton.getInstance().GetYRaqueta());
     }
 
 }

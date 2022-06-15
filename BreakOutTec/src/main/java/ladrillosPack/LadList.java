@@ -74,4 +74,12 @@ public class LadList {
     public Nodo getPrimero(){
         return this.inicio;
     }
+
+    /**
+     *Get tamano de la lista
+     * @return size
+     */
+    public int getSize() {
+        return size;
+    }
 }

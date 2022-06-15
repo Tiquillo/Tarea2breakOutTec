@@ -41,10 +41,10 @@ public class Ladrillos {
         this.ActivarEfecto();
         Jugador.getInstance().getLadrillosList().Eliminar(this);
         Integer indice = Jugador.getInstance().getLadrillosList().getIndice(this);
-        if (indice != -1) {
-            ManejoJsonSingleton.getInstance().RemoveLadrillo(indice);
-        }
         this.getLadrillo().setX(-100);
+        if (indice != -1) {
+            ManejoJsonSingleton.getInstance().UpdatePosXBrick(indice-1, -100);
+        }
     }
 
     /**
@@ -59,10 +59,12 @@ public class Ladrillos {
 
             if (Jugador.getInstance().getRaqueta().getWidth()<400) {
                 Jugador.getInstance().getRaqueta().setWidth(Jugador.getInstance().getRaqueta().getWidth()*2);
+                ManejoJsonSingleton.getInstance().SetRaqueta(Jugador.getInstance().getRaqueta().getX(), Jugador.getInstance().getRaqueta().getY(), Jugador.getInstance().getRaqueta().getWidth());
             }
         } else if (efecto == "mitadraq"){
             if (Jugador.getInstance().getRaqueta().getWidth()>=20) {
                 Jugador.getInstance().getRaqueta().setWidth(Jugador.getInstance().getRaqueta().getWidth()/2);
+                ManejoJsonSingleton.getInstance().SetRaqueta(Jugador.getInstance().getRaqueta().getX(), Jugador.getInstance().getRaqueta().getY(), Jugador.getInstance().getRaqueta().getWidth());
             }
 
         } else if (efecto == "masvel"){

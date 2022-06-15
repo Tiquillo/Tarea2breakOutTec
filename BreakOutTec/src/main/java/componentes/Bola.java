@@ -247,7 +247,7 @@ public class Bola {
         return bola;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return active;
     }
 

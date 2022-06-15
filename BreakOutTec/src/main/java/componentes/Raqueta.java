@@ -2,6 +2,7 @@ package componentes;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import json.ManejoJsonSingleton;
 
 public class Raqueta {
     
@@ -17,6 +18,7 @@ public class Raqueta {
     private Raqueta(){
         raqueta = new Rectangle(340, 500, 120, 20);
         raqueta.setFill(Color.BLUE);
+        ManejoJsonSingleton.getInstance().SetRaqueta(340, 500, 120);
     }
     /**
      * Retorna la instancia de la clase Raqueta
@@ -35,6 +37,7 @@ public class Raqueta {
     public void MoverIzquierda() {
         if (raqueta.getX() > 0) {
             raqueta.setX(raqueta.getX() - speed);
+            ManejoJsonSingleton.getInstance().SetRaqueta((int) raqueta.getX(), (int) raqueta.getY(), (int) raqueta.getWidth());
         }
     }
 
@@ -44,6 +47,7 @@ public class Raqueta {
     public void MoverDerecha() {
         if (raqueta.getX() + raqueta.getWidth() < 800) {
             raqueta.setX(raqueta.getX() + speed);
+            ManejoJsonSingleton.getInstance().SetRaqueta((int) raqueta.getX(), (int) raqueta.getY(), (int) raqueta.getWidth());
         }
     }
 

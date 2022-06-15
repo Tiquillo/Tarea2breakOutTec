@@ -77,11 +77,11 @@ int iniciarServidor(){
                     longitudCadena = ntohl(buffer);
                     ///Se lee la cadena enviada
                     Lee_Socket(socketCliente[i], cadena, longitudCadena);
-                    printf("Cliente %d envia %s\n", i + 1, cadena);
+                    //printf("Cliente %d envia %s\n", i + 1, cadena);
 
                     accion = AccionesServidor(cadena);
 
-                    printf("Accion: %d\n", accion);
+                    //printf("Accion: %d\n", accion);
 
                     if(accion != 2) {
 
