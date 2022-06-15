@@ -42,19 +42,20 @@ public class ladrillos {
     }
 
     public void Colision(){
-
-        Jugador.getInstance().getGroup().getChildren().remove(this.getLadrillo());
-
-    }
-
-    public void ActivarEfecto() {
-
-        System.out.println("Activando efecto");
+        //TODO Colisión no funciona bien
+        this.ActivarEfecto();
+        //Jugador.getInstance().getGroup().getChildren().remove(this.getLadrillo());
 
     }
 
-    public float[] getPosicion(){
-        float[] posicion = new float[2];
+    private void ActivarEfecto() {
+
+        System.out.println("Activando " + this.getEfecto());
+
+    }
+
+    public Float[] getPosicion(){
+        Float[] posicion = new Float[2];
         posicion[0] = (float) this.getLadrillo().getX();
         posicion[1] = (float) this.getLadrillo().getY();
         return posicion;

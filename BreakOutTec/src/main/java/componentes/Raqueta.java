@@ -43,6 +43,10 @@ public class Raqueta {
         return (int) raqueta.getY();
     }
 
+    public Integer getWidth() {
+        return (int) raqueta.getWidth();
+    }
+
     public void setWidth(Integer width) {
         raqueta.setWidth(width);
     }
