@@ -70,4 +70,8 @@ public class LadList {
         }
         return -1;
     }
+
+    public Nodo getPrimero(){
+        return this.inicio;
+    }
 }

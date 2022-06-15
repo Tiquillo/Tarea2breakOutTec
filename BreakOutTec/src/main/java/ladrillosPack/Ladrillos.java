@@ -12,6 +12,8 @@ public class Ladrillos {
     private Integer x;
     private Integer y;
 
+    private Integer pts = 0;
+
     private String efecto;
 
     private Rectangle ladrillo;
@@ -35,6 +37,7 @@ public class Ladrillos {
      */
     public void Colision() throws ParseException {
         //TODO Colisión no funciona bien
+        Jugador.getInstance().IncScore(pts);
         this.ActivarEfecto();
         Jugador.getInstance().getLadrillosList().Eliminar(this);
         Integer indice = Jugador.getInstance().getLadrillosList().getIndice(this);
@@ -49,14 +52,21 @@ public class Ladrillos {
      */
     private void ActivarEfecto() throws ParseException {
 
-        System.out.println("Activando " + this.getEfecto());
+        //Jugador.getInstance().SetPoder(this.efecto);
         if (efecto == ""){
 
         } else if (efecto == "dobleraq"){
-            Jugador.getInstance().getRaqueta().setWidth(Jugador.getInstance().getRaqueta().getWidth() * 2);
+
+            if (Jugador.getInstance().getRaqueta().getWidth()<400) {
+                Jugador.getInstance().getRaqueta().setWidth(Jugador.getInstance().getRaqueta().getWidth()*2);
+            }
         } else if (efecto == "mitadraq"){
-            Jugador.getInstance().getRaqueta().setWidth(Jugador.getInstance().getRaqueta().getWidth() / 2);
+            if (Jugador.getInstance().getRaqueta().getWidth()>=20) {
+                Jugador.getInstance().getRaqueta().setWidth(Jugador.getInstance().getRaqueta().getWidth()/2);
+            }
+
         } else if (efecto == "masvel"){
+            Jugador.getInstance().IncSpeed();
             ListaBolas bolas = Jugador.getInstance().getListaBolas();
             NodoBola temp = bolas.getPrimero();
             for (int i = 0; i < bolas.getcantidad(); i++) {
@@ -64,23 +74,28 @@ public class Ladrillos {
                 temp = temp.getSiguiente();
             }
         } else if (efecto == "menosvel"){
-            ListaBolas bolas = Jugador.getInstance().getListaBolas();
-            NodoBola temp = bolas.getPrimero();
-            for (int i = 0; i < bolas.getcantidad(); i++) {
-                temp.getBola().setVelocidad(temp.getBola().getVelocidad() - 1);
-                temp = temp.getSiguiente();
+            if (Jugador.getInstance().getListaBolas().getPrimero().getBola().getVelocidad() > 1){
+                Jugador.getInstance().DecSpeed();
+                ListaBolas bolas = Jugador.getInstance().getListaBolas();
+                NodoBola temp = bolas.getPrimero();
+                for (int i = 0; i < bolas.getcantidad(); i++) {
+                    temp.getBola().setVelocidad(temp.getBola().getVelocidad() - 1);
+                    temp = temp.getSiguiente();
+                }
             }
+
         } else if (efecto == "masbolas"){
-            Bola newbola = new Bola();
-            newbola.setDireccion(270f);
-            Jugador.getInstance().getListaBolas().Insertar(newbola);
-            Jugador.getInstance().getGroup().getChildren().add(newbola.getBola());
-            Integer principalX = Math.round(newbola.getPosicion()[0]);
-            Integer principalY = Math.round(newbola.getPosicion()[1]);
-            ManejoJsonSingleton.getInstance().AddBolas(principalX,principalY);
+//            Bola newbola = new Bola();
+//            newbola.setDireccion(270f);
+//            Jugador.getInstance().getListaBolas().Insertar(newbola);
+//            Jugador.getInstance().getGroup().getChildren().add(newbola.getBola());
+//            Integer principalX = Math.round(newbola.getPosicion()[0]);
+//            Integer principalY = Math.round(newbola.getPosicion()[1]);
+//            ManejoJsonSingleton.getInstance().AddBolas(principalX,principalY);
 
         } else if (efecto == "vida"){
             Jugador.getInstance().setVidas(Jugador.getInstance().getVidas() + 1);
+            Jugador.getInstance().IncLives();
         }
     }
 
@@ -97,6 +112,14 @@ public class Ladrillos {
 
     public Rectangle getLadrillo() {
         return ladrillo;
+    }
+
+    public Integer getPts() {
+        return pts;
+    }
+
+    public void setPts(Integer pts) {
+        this.pts = pts;
     }
 
     public String getEfecto(){

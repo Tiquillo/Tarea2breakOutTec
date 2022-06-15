@@ -26,6 +26,16 @@ public class Jugador extends Application {
     private final Font font = new Font("Liberation Sans Italic", 16);
 
     private final Text textoDeAyuda = new Text();
+    private Text scoretxt;
+
+    private Text livescount;
+
+    private Text levelcount;
+
+    private Text power;
+
+    private Text speed;
+
     private final Group group = new Group();
 
     private final ListaBolas listaBolas;
@@ -34,12 +44,17 @@ public class Jugador extends Application {
 
     private Integer vidas = 3;
 
+    private Integer nivel = 1;
+
+    private Integer velocidad = 3;
+
     private final Raqueta raq = Raqueta.getInstance();
 
     private Ladrillos eliminarLad = null;
 
+    private String poder = "";
+
     LadList ladrillosList = new LadList();
-    //LadList tempLadList = new LadList(); // TODO borrar esto xd es temporal
 
     private Boolean corriendo = false;
     private SocketClient cliente = new SocketClient("127.0.0.1", 8080);
@@ -133,8 +148,17 @@ public class Jugador extends Application {
         Integer principalY = Math.round(principal.getPosicion()[1]);
         manejoJson.AddBolas(principalX,principalY);
 
+        Nodo temp = ladrillosList.getPrimero();
+        while (manejoJson.i < manejoJson.size){
+            temp.getLadrillo().setEfecto(manejoJson.getPower());
+            temp.getLadrillo().setPts(manejoJson.getPts());
+            manejoJson.Next();
+            temp = temp.getSiguiente();
+        }
+        manejoJson.ResetI();
+
         cliente.sentString(manejoJson.GetJsonString());
-        System.out.println("primer respuesta: " + respuesta);
+        //System.out.println("primer respuesta: " + respuesta);
 
     }
 
@@ -159,10 +183,50 @@ public class Jugador extends Application {
         text.setFont(font);
         group.getChildren().add(text);
 
-        Text score = new Text(5, 40, String.valueOf(this.score));
-        score.setFill(Color.WHITE);
-        score.setFont(font);
-        group.getChildren().add(score);
+        scoretxt = new Text(5, 40, String.valueOf(this.score));
+        scoretxt.setFill(Color.WHITE);
+        scoretxt.setFont(font);
+        group.getChildren().add(scoretxt);
+
+        Text text2 = new Text(105, 20, "Vidas: ");
+        text2.setFill(Color.WHITE);
+        text2.setFont(font);
+        group.getChildren().add(text2);
+
+        livescount = new Text(105, 40, String.valueOf(this.vidas));
+        livescount.setFill(Color.WHITE);
+        livescount.setFont(font);
+        group.getChildren().add(livescount);
+
+        Text text3 = new Text(205, 20, "Nivel: ");
+        text3.setFill(Color.WHITE);
+        text3.setFont(font);
+        group.getChildren().add(text3);
+
+        levelcount = new Text(205, 40, String.valueOf(this.nivel));
+        levelcount.setFill(Color.WHITE);
+        levelcount.setFont(font);
+        group.getChildren().add(levelcount);
+
+        Text text4 = new Text(305, 20, "Velocidad: ");
+        text4.setFill(Color.WHITE);
+        text4.setFont(font);
+        group.getChildren().add(text4);
+
+        speed = new Text(305, 40, String.valueOf(this.velocidad));
+        speed.setFill(Color.WHITE);
+        speed.setFont(font);
+        group.getChildren().add(speed);
+
+//        Text text5 = new Text(405, 20, "Poder Activado: ");
+//        text5.setFill(Color.WHITE);
+//        text5.setFont(font);
+//        group.getChildren().add(text5);
+//
+//        power = new Text(405, 40, poder);
+//        power.setFill(Color.WHITE);
+//        power.setFont(font);
+//        group.getChildren().add(power);
 
         group.getChildren().add(raq.getRaqueta());
 
@@ -173,15 +237,10 @@ public class Jugador extends Application {
         btn.setMinHeight(30);
         group.getChildren().add(btn);
         btn.setOnAction(e -> {
-            group.getChildren().remove(ladrillosList.Acceder(7).getLadrillo());
+            System.exit(0);
         });
 
         CheckEvent();
-
-        if (eliminarLad != null) {
-            group.getChildren().remove(eliminarLad.getLadrillo());
-            eliminarLad = null;
-        }
 
         win.setScene(scene);
         win.show();
@@ -235,6 +294,7 @@ public class Jugador extends Application {
             textoDeAyuda.setX(275);
 
             while (corriendo) {
+
                 try {
                     Thread.sleep(16, 666);
                 } catch (InterruptedException e) {
@@ -268,6 +328,36 @@ public class Jugador extends Application {
         });
         thread.start();
 
+    }
+
+    public void IncScore(Integer pts){
+        score += pts;
+        scoretxt.setText(String.valueOf(score));
+    }
+
+    public void IncLives(){
+        vidas += 1;
+        livescount.setText(String.valueOf(vidas));
+    }
+
+    public void IncLevel(){
+        nivel += 1;
+        levelcount.setText(String.valueOf(nivel));
+    }
+
+    public void IncSpeed(){
+        velocidad += 1;
+        speed.setText(String.valueOf(velocidad));
+    }
+
+    public void DecSpeed(){
+        velocidad -= 1;
+        speed.setText(String.valueOf(velocidad));
+    }
+
+    public void SetPoder(String poder){
+        this.poder = poder;
+        power.setText(poder);
     }
 
 
