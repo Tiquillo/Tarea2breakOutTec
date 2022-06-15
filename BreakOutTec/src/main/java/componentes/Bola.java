@@ -24,6 +24,9 @@ public class Bola {
 
     private final Circle bola;
 
+    /**
+        * Constructor de la clase
+     */
     public Bola() {
 
         bola = new Circle(400, 450, radioBola);
@@ -34,6 +37,10 @@ public class Bola {
 
     }
 
+    /**
+        * Identifica una colisión con un ladrillo y obtiene la dirección del rebote
+        * @param posLadrillo Posición del ladrillo
+     */
     private void Rebote(Float[] posLadrillo) {
 
         // revisa si la bola está tocando el ladrillo
@@ -110,28 +117,6 @@ public class Bola {
         }
 
 
-        /*
-        if (posLadrillo[1] < posicion[1] + radioBola && posicion[1] < posLadrillo[1] + altoLadrillo) {
-            System.out.println("Dentro de línea horizontal");
-            if (posLadrillo[0] < posicion[0] + radioBola) {
-                direccionRebote = "I";
-            } else if (posLadrillo[0] + anchoLadrillo > posicion[0] - radioBola) {
-                direccionRebote = "D";
-            }
-        }
-
-        if (posLadrillo[0] < posicion[0] + radioBola && posLadrillo[1] < posicion[1] + radioBola) {
-            System.out.println("Dentro de línea vertical");
-            System.out.println(posLadrillo[0] < posicion[0] + radioBola);
-            System.out.println(posLadrillo[1] < posicion[1] + radioBola);
-            if (posLadrillo[1] < posicion[1] + radioBola) {
-                direccionRebote = "AR";
-            } else if (posLadrillo[1] + altoLadrillo > posicion[1] - radioBola) {
-                direccionRebote = "AB";
-            }
-        }
-
-        */
         if  (!Objects.equals(direccionRebote, "\0")) {
             this.colision = true;
             System.out.println("Colision " + direccionRebote);
@@ -139,6 +124,10 @@ public class Bola {
         }
     }
 
+    /**
+        * Cambia la dirección de la bola cuando toca la raqueta
+        * @param raqueta del juego
+     */
     private void ColisionConRaqueta(Raqueta raqueta) {
         if (posicion[1] + radioBola > 500 && posicion[0] + radioBola > raqueta.getX() &&
                 posicion[0] - radioBola < raqueta.getX() + raqueta.getWidth()) {
@@ -148,6 +137,9 @@ public class Bola {
         }
     }
 
+    /**
+        * Determina dirección de la bola cuando rebota con los bordes de la pantalla
+     */
     private void ColisionConEscenario() {
         if (posicion[0] - radioBola < 0) {
             this.direccionRebote = "D";
@@ -168,6 +160,9 @@ public class Bola {
 
     }
 
+    /**
+        * Cambia la dirección de la bola
+     */
     private void CambiarDireccion() {
 
         if (direccion == 0f || direccion == 360f || direccion == 180f || direccion == 90f || direccion == 270f || direccionRebote.equals("DI")) {
@@ -189,6 +184,11 @@ public class Bola {
         this.direccionRebote = "\0";
     }
 
+    /**
+        * Mueve la bola y consulta si la bola colisionó con algo
+        * @param raqueta del juego
+        * @param ladrillos del juego
+     */
     public void Mover(LadList ladrillos, Raqueta raqueta) {
         posicion[0] += velocidad * (float) Math.cos(Math.toRadians(direccion));
         posicion[1] += velocidad * (float) Math.sin(Math.toRadians(direccion));
@@ -213,6 +213,9 @@ public class Bola {
     }
 
 
+    /*
+        * getters y setters
+     */
 
     public void setDireccion(Float direccion) {
         this.direccion = direccion;
@@ -232,6 +235,10 @@ public class Bola {
 
     public void setVelocidad(Integer velocidad) {
         this.velocidad = velocidad;
+    }
+
+    public Integer getVelocidad() {
+        return velocidad;
     }
 
     public Circle getBola() {

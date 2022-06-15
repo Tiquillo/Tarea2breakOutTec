@@ -42,16 +42,19 @@ public class Jugador extends Application {
         return instance;
     }
 
+    /**
+     * Constructor de la clase Jugador
+     */
     private Jugador() {
 
         Integer x = 12;
         Integer y = 55;
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladRojo(x, y);
+            Ladrillos temp = new LadRojo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
@@ -59,11 +62,11 @@ public class Jugador extends Application {
         }
 
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladNaranja(x, y);
+            Ladrillos temp = new LadNaranja(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
@@ -71,11 +74,11 @@ public class Jugador extends Application {
         }
 
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladAmarillo(x, y);
+            Ladrillos temp = new LadAmarillo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
@@ -85,20 +88,16 @@ public class Jugador extends Application {
         }
 
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladVerde(x, y);
+            Ladrillos temp = new LadVerde(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
             }
         }
-
-
-        //tempLadList.Insertar(new ladAmarillo(300, 200));
-        //group.getChildren().add(tempLadList.Acceder(0).getLadrillo());
 
         listaBolas = new ListaBolas();
         Bola principal = new Bola();
@@ -108,6 +107,10 @@ public class Jugador extends Application {
 
     }
 
+    /**
+     * Método que se ejecuta al iniciar la aplicación. Establece los elementos del contenido y los dibuja
+     * @param win ventana principal
+     */
     public void start(Stage win) {
         win.setTitle("BreakOutTec!-Jugador");
         Scene scene = new Scene(group, 800, 600, Color.BLACK);
@@ -144,6 +147,10 @@ public class Jugador extends Application {
         win.show();
     }
 
+    /**
+        * Metodo que se encarga de controlar los eventos de teclado
+     */
+
     private void CheckEvent(){
         final Boolean[] moviendose = {false};
         group.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
@@ -153,14 +160,14 @@ public class Jugador extends Application {
                 if (event.getCode() == javafx.scene.input.KeyCode.A) {
                     //System.out.println("Izquierda");
                     if (corriendo) {
-                        raq.moverIzquierda();
+                        raq.MoverIzquierda();
                         if (!moviendose[0]) textoDeAyuda.setText("");
                         moviendose[0] = true;
                     }
                 } else if (event.getCode() == javafx.scene.input.KeyCode.D) {
                     //System.out.println("Derecha");
                     if (corriendo){
-                        raq.moverDerecha();
+                        raq.MoverDerecha();
                         if (!moviendose[0]) textoDeAyuda.setText("");
                         moviendose[0] = true;
                     }
@@ -178,6 +185,9 @@ public class Jugador extends Application {
 
     }
 
+    /**
+        * Mueve la bola mientras el juego está corriendo
+     */
     void Bucle() {
         Thread thread = new Thread(() -> {
 
@@ -192,8 +202,6 @@ public class Jugador extends Application {
                 }
                 for (Integer i = 0; i < listaBolas.getCantidad(); i++) {
 
-                    //listaBolas.getBola(i).Mover(tempLadList);
-                    //TODO los ladrillos originales están desabilitados temporalmente
                     listaBolas.getBola(i).Mover(ladrillosList, raq);
 
                     if (listaBolas.getBola(i).getPosicion()[1] > 500) {
@@ -218,7 +226,9 @@ public class Jugador extends Application {
 
     }
 
-
+    /*
+        * getters y setters
+     */
     public Group getGroup() {
         return group;
     }

@@ -12,7 +12,7 @@ public class LadList {
         this.size = 0;
     }
 
-    public void Insertar(ladrillos ladrillo) {
+    public void Insertar(Ladrillos ladrillo) {
         Nodo nuevo = new Nodo(ladrillo);
         if (this.inicio == null) {
             this.inicio = nuevo;
@@ -24,7 +24,7 @@ public class LadList {
         this.size++;
     }
 
-    public void Eliminar(ladrillos ladrillo) {
+    public void Eliminar(Ladrillos ladrillo) {
         Nodo actual = this.inicio;
         Nodo anterior = null;
         while (actual != null) {
@@ -50,7 +50,7 @@ public class LadList {
         return this.size == 0;
     }
 
-    public ladrillos Acceder(int index) {
+    public Ladrillos Acceder(int index) {
         Nodo temp = this.inicio;
         for (int i = 0; i < index; i++) {
             temp = temp.getSiguiente();

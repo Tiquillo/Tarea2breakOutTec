@@ -5,17 +5,23 @@ import javafx.scene.shape.Rectangle;
 
 public class Raqueta {
     
-    private Rectangle raqueta;
+    private final Rectangle raqueta;
     
     private static Raqueta instance = null;
 
     private Integer speed = 10;
-    
+
+    /**
+     * Constructor de la clase Raqueta
+     */
     private Raqueta(){
         raqueta = new Rectangle(340, 500, 120, 20);
         raqueta.setFill(Color.BLUE);
     }
-    
+    /**
+     * Retorna la instancia de la clase Raqueta
+     * @return Instancia de la clase Raqueta
+     */
     public static Raqueta getInstance() {
         if (instance == null) {
             instance = new Raqueta();
@@ -23,16 +29,25 @@ public class Raqueta {
         return instance;
     }
 
-    public Rectangle getRaqueta() {
-        return raqueta;
-    }
-
-    public void moverIzquierda() {
+    /**
+     * Mueve la raqueta a la izquierda
+     */
+    public void MoverIzquierda() {
         raqueta.setX(raqueta.getX() - speed);
     }
 
-    public void moverDerecha() {
+    /**
+     * Mueve la raqueta a la derecha
+     */
+    public void MoverDerecha() {
         raqueta.setX(raqueta.getX() + speed);
+    }
+
+    /*
+     * Getters y Setters
+     */
+    public Rectangle getRaqueta() {
+        return raqueta;
     }
 
     public Integer getX() {
@@ -55,11 +70,9 @@ public class Raqueta {
         this.speed = speed;
     }
 
-    public float[] getPosicion(){
-        float[] posicion = new float[2];
-        posicion[0] = (float) raqueta.getX();
-        posicion[1] = (float) raqueta.getY();
-        return posicion;
+    public Float[] getPosicion(){
+
+        return new Float[]{(float) raqueta.getX(), (float) raqueta.getY()};
     }
     
 }
