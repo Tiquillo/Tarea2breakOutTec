@@ -4,20 +4,19 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 import javafx.stage.Stage;
-import javafx.geometry.*;
-import ladrillosPack.*;
-import javafx.scene.text.*;
 
 
-public class main extends Application {
+public class Main extends Application {
+
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * @param win Ventana principal
+     */
     @Override
     public void start(Stage win) {
 
