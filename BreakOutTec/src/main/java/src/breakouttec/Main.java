@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.json.simple.parser.ParseException;
 
 
 public class Main extends Application {
@@ -33,7 +34,11 @@ public class Main extends Application {
         group.getChildren().add(btn);
         btn.setOnAction(e -> {
             win.close();
-            Jugador.getInstance().start(new Stage());
+            try {
+                Jugador.getInstance().start(new Stage());
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         Button btn2 = new Button("Espectador");
@@ -42,6 +47,10 @@ public class Main extends Application {
         btn2.setMinWidth(150);
         btn2.setMinHeight(100);
         group.getChildren().add(btn2);
+        btn2.setOnAction(e -> {
+            win.close();
+            Espectador.getInstance().start(new Stage());
+        });
 
         win.show();
     }

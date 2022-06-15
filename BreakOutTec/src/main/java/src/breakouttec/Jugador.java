@@ -12,6 +12,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ladrillosPack.*;
 import javafx.scene.text.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import serverSockets.SocketClient;
+import json.*;
 
 public class Jugador extends Application {
 
@@ -34,8 +38,13 @@ public class Jugador extends Application {
     //LadList tempLadList = new LadList(); // TODO borrar esto xd es temporal
 
     private Boolean corriendo = false;
+    private SocketClient cliente = new SocketClient("127.0.0.1", 8080);
 
-    public static Jugador getInstance() {
+    private JSONObject obj = new JSONObject();
+
+    private ManejoJsonSingleton manejoJson = ManejoJsonSingleton.getInstance();
+
+    public static Jugador getInstance() throws ParseException {
         if (instance == null) {
             instance = new Jugador();
         }
@@ -45,7 +54,7 @@ public class Jugador extends Application {
     /**
      * Constructor de la clase Jugador
      */
-    private Jugador() {
+    private Jugador() throws ParseException {
 
         Integer x = 12;
         Integer y = 55;
@@ -98,6 +107,17 @@ public class Jugador extends Application {
                 y += 20;
             }
         }
+
+        obj.put("accion", 1);
+        String json = obj.toJSONString();
+        cliente.sentString(json);
+        String respuesta = cliente.receiveString(); //Devuelve los ladrillos
+        manejoJson.setDatos(respuesta);
+        manejoJson.SetPuntos(score);//puntos para enviar al observador
+        manejoJson.SetVidas(vidas);//vidas para enviar al observador
+
+        cliente.sentString(manejoJson.GetJsonString());
+        System.out.println("primer respuesta: " + respuesta);
 
         listaBolas = new ListaBolas();
         Bola principal = new Bola();
