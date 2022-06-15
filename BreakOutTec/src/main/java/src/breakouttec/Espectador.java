@@ -45,6 +45,7 @@ public class Espectador extends Application {
         win.setTitle("Breakout-Espectador");
         win.setResizable(false);
 
+
         //Agregar lo que tenga que ir en el monitor, hay que poner un boton que sino no sirve por alguna razon
         Button btn = new Button("Salir");
         btn.setLayoutX(725);
