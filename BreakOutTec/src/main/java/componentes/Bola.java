@@ -15,6 +15,8 @@ public class Bola {
     private Boolean colision = false;
     private Float[] posicion;
 
+    private boolean active = true;
+
     private final Integer radioBola = 10;
 
     private static final Integer anchoLadrillo = 100;
@@ -243,5 +245,13 @@ public class Bola {
 
     public Circle getBola() {
         return bola;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

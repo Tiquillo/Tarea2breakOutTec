@@ -1,25 +1,23 @@
 package src.breakouttec;
 
-import componentes.*;
+import componentes.Bola;
+import componentes.ListaBolas;
+import componentes.Raqueta;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotResult;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import json.ManejoJsonSingleton;
 import ladrillosPack.*;
-import javafx.scene.text.*;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
 import serverSockets.SocketClient;
 
+/**
+ * Clase espectador que permite ver el juego en tiempo real. Extiende de Application par JavaFX.
+ * Es un singleton, por lo que solo se puede instanciar una vez.
+ */
 public class Espectador extends Application {
 
     private static Espectador instance = null;
@@ -34,6 +32,11 @@ public class Espectador extends Application {
 
     private final SocketClient observador = new SocketClient("127.0.0.1", 8080);
 
+    /**
+     * Constructor de la clase
+     * @return Instancia de la clase
+     */
+
     public static Espectador getInstance() {
         if (instance == null) {
             instance = new Espectador();
@@ -41,11 +44,10 @@ public class Espectador extends Application {
         return instance;
     }
 
+    /**
+     * Constructor de la clase privado para evitar que se pueda instanciar más de una vez
+     */
     private Espectador() {
-
-        String respuesta = observador.receiveString();
-
-        //Formar la lista de los ladrillos, etc
 
     }
 
@@ -94,6 +96,9 @@ public class Espectador extends Application {
         btn.setMinWidth(70);
         btn.setMinHeight(30);
         group.getChildren().add(btn);
+        btn.setOnAction(e -> {
+            System.exit(0);
+        });
 
         Bucle();
 
@@ -105,10 +110,10 @@ public class Espectador extends Application {
         Thread thread = new Thread(() -> {
 
             Integer i = 0;
-            final JSONObject json = new JSONObject();
-            json.put("tipo", 1);
-             String jsonString = json.toJSONString();
-            observador.sentString(jsonString);
+//            final JSONObject json = new JSONObject();
+//            json.put("tipo", 1);
+//            String jsonString = json.toJSONString();
+//            //observador.sentString(jsonString);
             String respuesta = observador.receiveString();
             System.out.println("Primera respuesta: " + respuesta);
 

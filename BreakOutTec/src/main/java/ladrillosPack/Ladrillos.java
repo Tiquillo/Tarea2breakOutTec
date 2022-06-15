@@ -85,13 +85,21 @@ public class Ladrillos {
             }
 
         } else if (efecto == "masbolas"){
-//            Bola newbola = new Bola();
-//            newbola.setDireccion(270f);
-//            Jugador.getInstance().getListaBolas().Insertar(newbola);
-//            Jugador.getInstance().getGroup().getChildren().add(newbola.getBola());
-//            Integer principalX = Math.round(newbola.getPosicion()[0]);
-//            Integer principalY = Math.round(newbola.getPosicion()[1]);
-//            ManejoJsonSingleton.getInstance().AddBolas(principalX,principalY);
+
+//            for (int i = 0; i < Jugador.getInstance().getListaBolas().getcantidad(); i++) {
+//
+//                if (!Jugador.getInstance().getListaBolas().getBola(i).isActive()){
+//                    Bola bola = Jugador.getInstance().getListaBolas().getBola(i);
+//                    bola.setActive(true);
+//                    bola.getBola().setCenterX(400);
+//                    bola.getBola().setCenterY(300);
+//                    Float[] pos = {Float.valueOf(400), Float.valueOf(300)};
+//                    bola.setPosicion(pos);
+//                    bola.setDireccion(180f);
+//                    ManejoJsonSingleton.getInstance().UpdateBall(400, 300,i);
+//                }
+//
+//            }
 
         } else if (efecto == "vida"){
             Jugador.getInstance().setVidas(Jugador.getInstance().getVidas() + 1);

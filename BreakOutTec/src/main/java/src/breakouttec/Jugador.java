@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -140,13 +141,25 @@ public class Jugador extends Application {
         listaBolas.Insertar(principal);
         group.getChildren().add(principal.getBola());
 
+        Integer principalX = Math.round(principal.getPosicion()[0]);
+        Integer principalY = Math.round(principal.getPosicion()[1]);
+        manejoJson.AddBolas(principalX,principalY);
+
+//        for (Integer i = 0; i < 5; i++) {
+//            Bola temp = new Bola();
+//            temp.getBola().setCenterX(-100);
+//            temp.getBola().setCenterY(-100);
+//            //temp.setDireccion(0f);
+//            listaBolas.Insertar(temp);
+//            group.getChildren().add(temp.getBola());
+//            manejoJson.AddBolas(principalX,principalY);
+//        }
+
         manejoJson.setDatos(respuesta);
         manejoJson.SetPuntos(score);
         manejoJson.SetVidas(vidas);
         manejoJson.SetRaqueta(raq.getX(),raq.getY(),raq.getWidth());
-        Integer principalX = Math.round(principal.getPosicion()[0]);
-        Integer principalY = Math.round(principal.getPosicion()[1]);
-        manejoJson.AddBolas(principalX,principalY);
+        manejoJson.AddAction(2);
 
         Nodo temp = ladrillosList.getPrimero();
         while (manejoJson.i < manejoJson.size){
@@ -310,34 +323,71 @@ public class Jugador extends Application {
 
                     if (listaBolas.getBola(i).getPosicion()[1] > 505) {
                         //TODO destruir la bola
-                        //listaBolas.Eliminar(i);
+                        Circle bola = listaBolas.getBola(i).getBola();
+                        bola.setCenterX(-100);
+                        bola.setCenterY(-100);
+                        Integer bolaX = Math.round(listaBolas.getBola(i).getPosicion()[0]);
+                        Integer bolaY = Math.round(listaBolas.getBola(i).getPosicion()[1]);
+                        manejoJson.UpdateBall(bolaX, bolaY, i);
+                        listaBolas.getBola(i).setActive(false);
                         //corriendo = false;
                     }
                 }
-                if (listaBolas.getCantidad() == 0) {
-                    corriendo = false;
-                    vidas--;
-                    Bola principal = new Bola();
-                    principal.setDireccion(270f);
-                    listaBolas.Insertar(principal);
+                if (!CheckBolas()) {
+                    //corriendo = false;
+                    listaBolas.getPrimero().getBola().setActive(true);
+                    listaBolas.getBola(0).getBola().setCenterX(400);
+                    listaBolas.getBola(0).getBola().setCenterY(380);
+                    listaBolas.getBola(0).setDireccion(270f);
+                    Float[] posicion = {Float.valueOf(400), Float.valueOf(280)};
+                    listaBolas.getBola(0).setPosicion(posicion);
+                    listaBolas.getBola(0).setDireccion(-270f);
+                    Integer bolaX = Math.round(listaBolas.getBola(0).getPosicion()[0]);
+                    Integer bolaY = Math.round(listaBolas.getBola(0).getPosicion()[1]);
+                    manejoJson.UpdateBall(bolaX, bolaY, 0);
+                    vidas --;
+                    livescount.setText(String.valueOf(vidas));
+                    manejoJson.SetVidas(vidas);
                 }
                 if (vidas == 0) {
-                    //TODO mostrar que perdió
+                    textoDeAyuda.setText("Has perdido");
+                    textoDeAyuda.setX(275);
+                    corriendo = false;
+                    break;
                 }
+
+                for (int i = 0; i < listaBolas.getCantidad(); i++) {
+
+                    manejoJson.UpdateBall(Math.round(listaBolas.getBola(i).getPosicion()[0]),Math.round(listaBolas.getBola(i).getPosicion()[1]), i);
+                }
+                cliente.sentString(manejoJson.GetJsonString());
             }
         });
         thread.start();
 
     }
 
+    public boolean CheckBolas(){
+
+        for (Integer i = 0; i < listaBolas.getCantidad(); i++) {
+            if (listaBolas.getBola(i).isActive()) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public void IncScore(Integer pts){
         score += pts;
         scoretxt.setText(String.valueOf(score));
+        manejoJson.SetPuntos(score);
     }
 
     public void IncLives(){
         vidas += 1;
         livescount.setText(String.valueOf(vidas));
+        manejoJson.SetVidas(vidas);
     }
 
     public void IncLevel(){
