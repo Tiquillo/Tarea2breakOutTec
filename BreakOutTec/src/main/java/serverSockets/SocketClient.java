@@ -77,7 +77,7 @@ public class SocketClient {
             receiveString = dato.toString();
             //System.out.println("Cliente Java: Recibido " + dato.toString());
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
