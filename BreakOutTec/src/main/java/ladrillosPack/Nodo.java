@@ -1,21 +1,19 @@
 package ladrillosPack;
 
-import javafx.scene.shape.Rectangle;
-
 public class Nodo {
 
-    private ladrillos ladrillo;
+    private Ladrillos ladrillo;
     private Nodo siguiente;
 
-    public Nodo(ladrillos ladrillo) {
+    public Nodo(Ladrillos ladrillo) {
         this.ladrillo = ladrillo;
     }
 
-    public ladrillos getLadrillo() {
+    public Ladrillos getLadrillo() {
         return ladrillo;
     }
 
-    public void setLadrillo(ladrillos ladrillo) {
+    public void setLadrillo(Ladrillos ladrillo) {
         this.ladrillo = ladrillo;
     }
 

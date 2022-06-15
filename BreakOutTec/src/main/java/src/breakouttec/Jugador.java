@@ -2,50 +2,68 @@ package src.breakouttec;
 
 import componentes.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import ladrillosPack.*;
 import javafx.scene.text.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+import serverSockets.SocketClient;
+import json.*;
 
 public class Jugador extends Application {
 
     private static Jugador instance = null;
 
-    private Font font = new Font("Liberation Sans Italic", 16);
-    private Group group = new Group();
+    private final Font font = new Font("Liberation Sans Italic", 16);
 
-    private ListaBolas listaBolas;
+    private final Text textoDeAyuda = new Text();
+    private final Group group = new Group();
+
+    private final ListaBolas listaBolas;
 
     private Integer score = 0;
 
-    private Raqueta raq = Raqueta.getInstance();
+    private Integer vidas = 3;
 
-    public static Jugador getInstance() {
+    private final Raqueta raq = Raqueta.getInstance();
+
+    LadList ladrillosList = new LadList();
+    //LadList tempLadList = new LadList(); // TODO borrar esto xd es temporal
+
+    private Boolean corriendo = false;
+    private SocketClient cliente = new SocketClient("127.0.0.1", 8080);
+
+    private JSONObject obj = new JSONObject();
+
+    private ManejoJsonSingleton manejoJson = ManejoJsonSingleton.getInstance();
+
+    public static Jugador getInstance() throws ParseException {
         if (instance == null) {
             instance = new Jugador();
         }
         return instance;
     }
 
-    private Jugador() {
+    /**
+     * Constructor de la clase Jugador
+     */
+    private Jugador() throws ParseException {
 
-        LadList ladrillosList = new LadList();
         Integer x = 12;
         Integer y = 55;
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladRojo(x, y);
+            Ladrillos temp = new LadRojo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
@@ -53,11 +71,11 @@ public class Jugador extends Application {
         }
 
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladNaranja(x, y);
+            Ladrillos temp = new LadNaranja(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
@@ -65,39 +83,64 @@ public class Jugador extends Application {
         }
 
         for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladAmarillo(x, y);
+            Ladrillos temp = new LadAmarillo(x, y);
             ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
+            if (x + 112 < 795){
+                x += 112;
+            } else {
+                x = 12;
+                y += 20;
+            }
+
+
+        }
+
+        for (Integer i = 0; i < 14; i++) {
+            Ladrillos temp = new LadVerde(x, y);
+            ladrillosList.Insertar(temp);
+            group.getChildren().add(temp.getLadrillo());
+            if (x + 112 < 795){
+                x += 112;
             } else {
                 x = 12;
                 y += 20;
             }
         }
 
-        for (Integer i = 0; i < 14; i++) {
-            ladrillos temp = new ladVerde(x, y);
-            ladrillosList.Insertar(temp);
-            group.getChildren().add(temp.getLadrillo());
-            if (x+112 < 795){
-                x +=112;
-            } else {
-                x = 12;
-                y += 20;
-            }
-        }
+        obj.put("accion", 1);
+        String json = obj.toJSONString();
+        cliente.sentString(json);
+        String respuesta = cliente.receiveString(); //Devuelve los ladrillos
+        manejoJson.setDatos(respuesta);
+        manejoJson.SetPuntos(score);//puntos para enviar al observador
+        manejoJson.SetVidas(vidas);//vidas para enviar al observador
+
+        cliente.sentString(manejoJson.GetJsonString());
+        System.out.println("primer respuesta: " + respuesta);
 
         listaBolas = new ListaBolas();
         Bola principal = new Bola();
+        principal.setDireccion(270f);
         listaBolas.Insertar(principal);
         group.getChildren().add(principal.getBola());
 
     }
 
+    /**
+     * Método que se ejecuta al iniciar la aplicación. Establece los elementos del contenido y los dibuja
+     * @param win ventana principal
+     */
     public void start(Stage win) {
         win.setTitle("BreakOutTec!-Jugador");
         Scene scene = new Scene(group, 800, 600, Color.BLACK);
+
+        textoDeAyuda.setFont(font);
+        textoDeAyuda.setFill(Color.WHITE);
+        textoDeAyuda.setText("Pulse E para comenzar");
+        textoDeAyuda.setX(325);
+        textoDeAyuda.setY(300);
+        group.getChildren().add(textoDeAyuda);
 
         Text text = new Text(5, 20, "Puntuacion: ");
         text.setFill(Color.WHITE);
@@ -124,24 +167,88 @@ public class Jugador extends Application {
         win.show();
     }
 
-    private void CheckEvent(){
+    /**
+        * Metodo que se encarga de controlar los eventos de teclado
+     */
 
+    private void CheckEvent(){
+        final Boolean[] moviendose = {false};
         group.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
             @Override
             public void handle(javafx.scene.input.KeyEvent event) {
                 //System.out.println(event.getCode());
                 if (event.getCode() == javafx.scene.input.KeyCode.A) {
                     //System.out.println("Izquierda");
-                    raq.moverIzquierda();
+                    if (corriendo) {
+                        raq.MoverIzquierda();
+                        if (!moviendose[0]) textoDeAyuda.setText("");
+                        moviendose[0] = true;
+                    }
                 } else if (event.getCode() == javafx.scene.input.KeyCode.D) {
                     //System.out.println("Derecha");
-                    raq.moverDerecha();
+                    if (corriendo){
+                        raq.MoverDerecha();
+                        if (!moviendose[0]) textoDeAyuda.setText("");
+                        moviendose[0] = true;
+                    }
+                } else if (event.getCode() == KeyCode.E) {
+                    //TODO mostrar en pantalla que toque E para empezar
+                    //System.out.println("Empezar");
+                    if (!corriendo) {
+                        Bucle();
+                        corriendo = true;
+                    }
+
                 }
             }
         });
 
     }
 
+    /**
+        * Mueve la bola mientras el juego está corriendo
+     */
+    void Bucle() {
+        Thread thread = new Thread(() -> {
+
+            textoDeAyuda.setText("Utilice A y D para mover la raqueta");
+            textoDeAyuda.setX(275);
+
+            while (corriendo) {
+                try {
+                    Thread.sleep(16, 666);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                for (Integer i = 0; i < listaBolas.getCantidad(); i++) {
+
+                    listaBolas.getBola(i).Mover(ladrillosList, raq);
+
+                    if (listaBolas.getBola(i).getPosicion()[1] > 505) {
+                        //TODO destruir la bola
+                        //listaBolas.Eliminar(i);
+                        //corriendo = false;
+                    }
+                }
+                if (listaBolas.getCantidad() == 0) {
+                    corriendo = false;
+                    vidas--;
+                    Bola principal = new Bola();
+                    principal.setDireccion(270f);
+                    listaBolas.Insertar(principal);
+                }
+                if (vidas == 0) {
+                    //TODO mostrar que perdió
+                }
+            }
+        });
+        thread.start();
+
+    }
+
+    /*
+        * getters y setters
+     */
     public Group getGroup() {
         return group;
     }

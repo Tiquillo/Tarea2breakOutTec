@@ -4,52 +4,115 @@ import java.util.Objects;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import ladrillosPack.LadList;
 
 public class Bola {
-    private final Integer velocidad = 5;
+    private Integer velocidad = 3;
     private Float direccion;
     private String direccionRebote = "\0";
 
     private Boolean colision = false;
-    private Float[] posicion = {0f,0f};
+    private Float[] posicion;
 
     private final Integer radioBola = 10;
 
-    private static final Integer anchoCaja = 50;
-    private static final Integer altoCaja = 15;
+    private static final Integer anchoLadrillo = 100;
+    private static final Integer altoLadrillo = 15;
 
     private static final Integer anchoPantalla = 800;
     private static final Integer altoPantalla = 600;
 
-    private Circle bola;
+    private final Circle bola;
 
+    /**
+        * Constructor de la clase
+     */
     public Bola() {
 
         bola = new Circle(400, 450, radioBola);
         bola.setFill(Color.WHITE);
+        posicion = new Float[2];
         posicion[0] = (float) bola.getCenterX();
         posicion[1] = (float) bola.getCenterY();
 
     }
 
-    private void Rebote(Float[] posCaja) {
-        if (posCaja[1] < posicion[1] + radioBola && posicion[1] < posCaja[1] + altoCaja) {
-            System.out.println("Dentro de línea horizontal");
-            if (posCaja[0] < posicion[0] + radioBola) {
-                direccionRebote = "I";
-            } else if (posCaja[0] + anchoCaja > posicion[0] - radioBola) {
-                direccionRebote = "D";
-            }
-        }
+    /**
+        * Identifica una colisión con un ladrillo y obtiene la dirección del rebote
+        * @param posLadrillo Posición del ladrillo
+     */
+    private void Rebote(Float[] posLadrillo) {
 
-        if (posCaja[0] < posicion[0] + radioBola && posCaja[1] < posicion[1] + radioBola) {
-            System.out.println("Dentro de línea vertical");
-            System.out.println(posCaja[0] < posicion[0] + radioBola);
-            System.out.println(posCaja[1] < posicion[1] + radioBola);
-            if (posCaja[1] < posicion[1] + radioBola) {
-                direccionRebote = "AR";
-            } else if (posCaja[1] + altoCaja > posicion[1] - radioBola) {
-                direccionRebote = "AB";
+        // revisa si la bola está tocando el ladrillo
+        if (posicion[1] + radioBola > posLadrillo[1] &&
+                posicion[1] - radioBola < posLadrillo[1] + altoLadrillo &&
+                posicion[0] + radioBola > posLadrillo[0] &&
+                posicion[0] - radioBola < posLadrillo[0] + anchoLadrillo) {
+
+            if (0 < direccion && direccion < 90) {
+
+                if (posicion[0] + radioBola - posLadrillo[0] > posicion[1] + radioBola - posLadrillo[1] &&
+                        posicion[0] + radioBola - posLadrillo[0] < radioBola + 1) {
+                    direccionRebote = "I";
+                } else if (posicion[0] + radioBola - posLadrillo[0] ==
+                        posicion[1] + radioBola - posLadrillo[1]) {
+                    direccionRebote = "DI";
+                } else {
+                    direccionRebote = "AR";
+                }
+            } else if (90 < direccion && direccion < 180) {
+
+                if (posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo > posicion[1] + radioBola - posLadrillo[1] &&
+                        posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo < radioBola + 1) {
+
+                    direccionRebote = "D";
+
+                } else if (posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo ==
+                        posicion[1] + radioBola - posLadrillo[1]) {
+
+                    direccionRebote = "DI";
+                } else {
+                    direccionRebote = "AR";
+                }
+
+            } else if (180 < direccion && direccion < 270) {
+
+                if (posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo >
+                        posicion[1] + radioBola - posLadrillo[1] + altoLadrillo &&
+                        posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo < radioBola + 1) {
+
+                    direccionRebote = "D";
+
+                } else if (posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo ==
+                        posicion[1] + radioBola - posLadrillo[1] + altoLadrillo) {
+
+                    direccionRebote = "DI";
+
+                } else {
+
+                    direccionRebote = "AB";
+                }
+            } else if (270 < direccion && direccion < 360) {
+
+                if (posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo >
+                posicion[1] + radioBola - posLadrillo[1] + altoLadrillo &&
+                posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo < radioBola + 1) {
+
+                    direccionRebote = "I";
+
+                } else if (posicion[0] + radioBola - posLadrillo[0] + anchoLadrillo ==
+                        posicion[1] + radioBola - posLadrillo[1] + altoLadrillo) {
+
+                    direccionRebote = "DI";
+
+                } else {
+
+                    direccionRebote = "AB";
+
+                }
+            } else {
+
+                direccionRebote = "DI";
             }
         }
 
@@ -57,14 +120,25 @@ public class Bola {
         if  (!Objects.equals(direccionRebote, "\0")) {
             this.colision = true;
             CambiarDireccion();
-            System.out.println("Posicion bola: " + posicion[0] + ", " + posicion[1]);
-            System.out.println("Posicion caja: " + posCaja[0] + ", " + posCaja[1]);
         }
-
     }
 
+    /**
+        * Cambia la dirección de la bola cuando toca la raqueta
+        * @param raqueta del juego
+     */
+    private void ColisionConRaqueta(Raqueta raqueta) {
+        if (posicion[1] + radioBola > 500 && posicion[0] + radioBola > raqueta.getX() &&
+                posicion[0] - radioBola < raqueta.getX() + raqueta.getWidth()) {
+            Integer ancho = raqueta.getWidth();
+            Integer distanciaConOrigen = (int) (posicion[0] - raqueta.getX());
+            direccion = 210 + (distanciaConOrigen / (ancho / 120f));
+        }
+    }
 
-
+    /**
+        * Determina dirección de la bola cuando rebota con los bordes de la pantalla
+     */
     private void ColisionConEscenario() {
         if (posicion[0] - radioBola < 0) {
             this.direccionRebote = "D";
@@ -78,41 +152,27 @@ public class Bola {
             this.direccionRebote = "AR";
         }
 
-
-
         if (!Objects.equals(direccionRebote, "\0")) {
-            System.out.println("Colision con escenario");
-            System.out.println("Posicion: " + posicion[0] + ", " + posicion[1]);
-            System.out.println("Direccion: " + direccion);
+
             CambiarDireccion();
         }
 
     }
 
+    /**
+        * Cambia la dirección de la bola
+     */
     private void CambiarDireccion() {
 
-        if (direccion == 0f || direccion == 360f || direccion == 180f || direccion == 90f || direccion == 270f) {
+        if (direccion == 0f || direccion == 360f || direccion == 180f || direccion == 90f || direccion == 270f || direccionRebote.equals("DI")) {
             direccion -= 180;
             direccionRebote = "\0";
         }
 
         switch (direccionRebote) {
-            case "I", "D":
-                direccion = 180 - direccion;
-
-                break;
-            case "AB", "AR":
-                if (direccion == 90 || direccion == 270) {
-                    direccion -= 180;
-                } else {
-                    direccion = 360 - direccion;
-                }
-
-                break;
-            case "IAR", "IAB", "DAR", "DAB":
-                direccion = 180 + direccion;
-
-                break;
+            case "I", "D" -> direccion = 180 - direccion;
+            case "AB", "AR" -> direccion = 360 - direccion;
+            case "IAR", "IAB", "DAR", "DAB" -> direccion = 180 + direccion;
         }
 
         if (direccion > 360) {
@@ -120,28 +180,41 @@ public class Bola {
         } else if (direccion < 0) {
             direccion += 360;
         }
-        System.out.println("Direccion de rebote: " + direccionRebote);
         this.direccionRebote = "\0";
     }
 
-    public void Mover(Caja[] cajas) {
+    /**
+        * Mueve la bola y consulta si la bola colisionó con algo
+        * @param raqueta del juego
+        * @param ladrillos del juego
+     */
+    public void Mover(LadList ladrillos, Raqueta raqueta) {
         posicion[0] += velocidad * (float) Math.cos(Math.toRadians(direccion));
         posicion[1] += velocidad * (float) Math.sin(Math.toRadians(direccion));
 
-        //Colision con cajas
-        for (Caja caja : cajas) {
-            System.out.println("Caja #" + caja.getCajaNum());
-            Rebote(caja.getPosicion());
+        bola.setCenterX(posicion[0]);
+        bola.setCenterY(posicion[1]);
 
-            /*
+        //Colision con ladrillos
+        for (Integer i = 0; i < ladrillos.Size(); i++) {
+            Rebote(ladrillos.Acceder(i).getPosicion());
+
             if (colision) {
-                EventoEspecial(caja.getEvento());
+                ladrillos.Acceder(i).Colision();
                 this.colision = false;
             }
-            */
+
         }
+
+        ColisionConRaqueta(raqueta);
+
         ColisionConEscenario();
     }
+
+
+    /*
+        * getters y setters
+     */
 
     public void setDireccion(Float direccion) {
         this.direccion = direccion;
@@ -157,6 +230,14 @@ public class Bola {
 
     public void setPosicion(Float[] newPosicion) {
         posicion = newPosicion;
+    }
+
+    public void setVelocidad(Integer velocidad) {
+        this.velocidad = velocidad;
+    }
+
+    public Integer getVelocidad() {
+        return velocidad;
     }
 
     public Circle getBola() {
