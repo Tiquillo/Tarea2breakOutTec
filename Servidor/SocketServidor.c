@@ -3,7 +3,12 @@
 //
 
 #include "SocketServidor.h"
-
+/**
+ * @brief Acepta una conexión de un cliente
+ * @param Descriptor Descriptor del socket
+ * @param Descriptor  int
+ * @return int
+ */
 int Acepta_Conexion_Cliente (int Descriptor)
 {
     socklen_t Longitud_Cliente;
@@ -28,6 +33,11 @@ int Acepta_Conexion_Cliente (int Descriptor)
     return Hijo;
 }
 
+/**
+ * @brief Abre un socket de tipo INET
+ * @param PORT Puerto del socket
+ * @return int
+ */
 int Abre_Socket_Inet (int PORT)
 {
     struct sockaddr_in Direccion;

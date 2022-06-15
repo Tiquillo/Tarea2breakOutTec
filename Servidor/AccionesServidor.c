@@ -6,6 +6,11 @@
 
 int velocidad = 1;
 
+/**
+ * Da la accion del servidor
+ * @param Datos char*
+ * @return int
+ */
 int AccionesServidor( char *Datos) {
 
     cJSON *json = cJSON_Parse(Datos);
@@ -30,6 +35,11 @@ int AccionesServidor( char *Datos) {
 
 }
 
+/**
+ * Da la orden de crear los ladrillos
+ * @param accion int
+ * @return chat*
+ */
 char *iniciarBricks(int accion) {
 
     cJSON *json = NULL;

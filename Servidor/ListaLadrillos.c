@@ -5,6 +5,9 @@
 #include <time.h>
 #include "ListaLadrillos.h"
 
+/**
+ * Inicia la lista enlazada de ladrillos
+ */
 void iniciar() {
     ListaLadrillos *lista = malloc(sizeof(ListaLadrillos));
     lista->primero = NULL;
@@ -13,6 +16,15 @@ void iniciar() {
     lista->velocidad = 1;
 }
 
+/**
+ * Agrega un nuevo ladrillo a la lista
+ * @param lista lista enlazada de ladrillosa
+ * @param puntuacion int
+ * @param x int
+ * @param y int
+ * @param tipo char
+ * @param poder int
+ */
 void insertar(ListaLadrillos *lista,int puntuacion, int x, int y, char *tipo, int poder) {
     Ladrillos *nuevo = malloc(sizeof(Ladrillos));
     nuevo->puntuacion = puntuacion;
@@ -31,10 +43,19 @@ void insertar(ListaLadrillos *lista,int puntuacion, int x, int y, char *tipo, in
     lista->n++;
 }
 
+/**
+ * Obtiene el head de la lista
+ * @param lista lista enlazada de ladrillos
+ * @return struct Ladrillos*
+ */
 struct ladrillo obtenerPrimero(ListaLadrillos *lista) {
     return *lista->primero;
 }
 
+/**
+ * Imprime la lista enlazada de ladrillos
+ * @param lista lista enlazada de ladrillos
+ */
 void Imprimir(ListaLadrillos *lista) {
     Ladrillos *aux = lista->primero;
     while (aux != NULL) {
@@ -43,6 +64,10 @@ void Imprimir(ListaLadrillos *lista) {
     }
 }
 
+/**
+ * Llena la lista con ladrillos generados aleatoriamente
+ * @param lista lista enlazada de ladrillos
+ */
 void LlenarLista(ListaLadrillos *lista) {
 
     srand(time(NULL));
@@ -79,10 +104,24 @@ void LlenarLista(ListaLadrillos *lista) {
 
 }
 
+/**
+ * Genera un numero aleatorio entre min y max
+ * @param min int
+ * @param max int
+ * @return int
+ */
+
 int aleatorio(int min, int max) {
 
     return min + rand() / (RAND_MAX / (max - min + 1) + 1);
 }
+
+/**
+ * Convierte la lista enlazada de ladrillos en un json object
+ * @param lista lista enlazada de ladrillos
+ * @param velocidad int
+ * @return cJSON*
+ */
 
 cJSON *convertirALista(ListaLadrillos *lista, int velocidad) {
 
@@ -117,6 +156,11 @@ cJSON *convertirALista(ListaLadrillos *lista, int velocidad) {
     return json;
 }
 
+/**
+ * Cambia la velocidad de la lista de ladrillos
+ * @param lista lista enlazada de ladrillos
+ * @param velocidad int
+ */
 void cambiarVelocidad(ListaLadrillos *lista, int velocidad) {
     lista->velocidad = velocidad;
 }

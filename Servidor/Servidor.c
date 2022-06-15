@@ -4,6 +4,11 @@
 
 #include "Servidor.h"
 
+/**
+ * Inicia el servidor
+ * @return int
+ */
+
 int iniciarServidor(){
 
     int socketServidor;
