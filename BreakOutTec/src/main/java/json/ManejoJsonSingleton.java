@@ -163,6 +163,19 @@ public class ManejoJsonSingleton {
     }
 
     /**
+     * Setea la x de un ladrillo
+     * @param x Integer
+     * @param pos Integer
+     */
+
+    public void UpdatePosXBrick(Integer x, Integer pos) {
+        String posSTR = pos.toString();
+        JSONObject temp = (JSONObject) json.get(posSTR);
+        temp.put("x", x);
+        json.put(posSTR, temp);
+    }
+
+    /**
      * Obtiene la posicion x de la bola en el json
      * @param bola
      * @return Integer
