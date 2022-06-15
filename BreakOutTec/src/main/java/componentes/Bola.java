@@ -1,10 +1,11 @@
 package componentes;
 
-import java.util.Objects;
-
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Circle;
 import ladrillosPack.LadList;
+import org.json.simple.parser.ParseException;
+
+import java.util.Objects;
 
 public class Bola {
     private Integer velocidad = 3;
@@ -188,7 +189,7 @@ public class Bola {
         * @param raqueta del juego
         * @param ladrillos del juego
      */
-    public void Mover(LadList ladrillos, Raqueta raqueta) {
+    public void Mover(LadList ladrillos, Raqueta raqueta) throws ParseException {
         posicion[0] += velocidad * (float) Math.cos(Math.toRadians(direccion));
         posicion[1] += velocidad * (float) Math.sin(Math.toRadians(direccion));
 

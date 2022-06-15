@@ -57,4 +57,17 @@ public class LadList {
         }
         return temp.getLadrillo();
     }
+
+    public Integer getIndice(Ladrillos lad){
+        Nodo temp = this.inicio;
+        Integer i = 0;
+        while(temp != null){
+            if(temp.getLadrillo().equals(lad)){
+                return i;
+            }
+            temp = temp.getSiguiente();
+            i++;
+        }
+        return -1;
+    }
 }

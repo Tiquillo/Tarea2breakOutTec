@@ -33,14 +33,18 @@ public class Raqueta {
      * Mueve la raqueta a la izquierda
      */
     public void MoverIzquierda() {
-        raqueta.setX(raqueta.getX() - speed);
+        if (raqueta.getX() > 0) {
+            raqueta.setX(raqueta.getX() - speed);
+        }
     }
 
     /**
      * Mueve la raqueta a la derecha
      */
     public void MoverDerecha() {
-        raqueta.setX(raqueta.getX() + speed);
+        if (raqueta.getX() + raqueta.getWidth() < 800) {
+            raqueta.setX(raqueta.getX() + speed);
+        }
     }
 
     /*

@@ -49,4 +49,49 @@ public class ListaBolas {
         }
         cantidad--;
     }
+
+    public void Eliminar(Bola bola) {
+        NodoBola actual = primero;
+        NodoBola anterior = null;
+        while (actual != null) {
+            if (actual.getBola().equals(bola)) {
+                if (anterior == null) {
+                    primero = actual.getSiguiente();
+                } else {
+                    anterior.setSiguiente(actual.getSiguiente());
+                }
+                cantidad--;
+                return;
+            }
+            anterior = actual;
+            actual = actual.getSiguiente();
+        }
+    }
+
+    public void EliminarTodas() {
+        primero = null;
+        ultimo = null;
+        cantidad = 0;
+    }
+
+    public NodoBola getPrimero() {
+        return primero;
+    }
+
+    public Integer getPosicion(Bola bola) {
+        NodoBola actual = primero;
+        Integer posicion = 0;
+        while (actual != null) {
+            if (actual.getBola().equals(bola)) {
+                return posicion;
+            }
+            actual = actual.getSiguiente();
+            posicion++;
+        }
+        return null;
+    }
+
+    public Integer getcantidad() {
+        return cantidad;
+    }
 }
