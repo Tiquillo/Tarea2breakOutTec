@@ -55,22 +55,24 @@ public class Espectador extends Application {
 
         Integer XY = -200;
 
+        // aquí generé todos los ladrillos fuera del campo de visión para asignarles pa posición usando los sockets.
+
         for (int i = 0; i < 56; i++) {
             Ladrillos temp = null;
             if (i / 14 == 0) {
                 temp = new LadRojo(XY, XY);
-                ladrillosList.Insertar(temp);
-                group.getChildren().add(temp.getLadrillo());
+
             } else if (i / 14 == 1) {
                 temp = new LadNaranja(XY, XY);
-                ladrillosList.Insertar(temp);
+
             } else if (i / 14 == 2) {
                 temp = new LadAmarillo(XY, XY);
-                ladrillosList.Insertar(temp);
+
             } else if (i / 14 == 3) {
                 temp = new LadVerde(XY, XY);
-                ladrillosList.Insertar(temp);
+
             }
+            ladrillosList.Insertar(temp);
             group.getChildren().add(temp.getLadrillo());
         }
 
@@ -83,6 +85,9 @@ public class Espectador extends Application {
         group.getChildren().add(Raqueta.getInstance().getRaqueta());
 
         //Agregar lo que tenga que ir en el monitor, hay que poner un boton que sino no sirve por alguna razon
+
+        // esto lo puso sergio así que no lo toqué
+
         Button btn = new Button("Salir");
         btn.setLayoutX(725);
         btn.setLayoutY(565);
@@ -107,16 +112,20 @@ public class Espectador extends Application {
             String respuesta = observador.receiveString();
             System.out.println("Primera respuesta: " + respuesta);
 
+            // aquí hice lo mismo que hizo david en prueba sockets
             try {
                 ManejoJsonSingleton.getInstance().setDatos(respuesta);
+                // aquí me pedía un try, se lo puse y ya xd
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
 
             while (true) {
+                //este while es el mismo que el de jugador y no debería enciclarse
+                // porque el socket pausa la ejecución esperando la llamada.
 
                 observador.sentString(ManejoJsonSingleton.getInstance().GetJsonString());
-                respuesta = observador.receiveString();
+                respuesta = observador.receiveString(); // esta línea me parece que pausa la ejecución xd
                 System.out.println("Respuesta: " + respuesta);
 
                 for (i = 0; i < ManejoJsonSingleton.getInstance().size; i++) {
@@ -128,7 +137,9 @@ public class Espectador extends Application {
                     System.out.println(ManejoJsonSingleton.getInstance().getPts());
                     System.out.println("----------------------------------------------------");
 
-
+                    // aquí hice lo mismo que david, pero usando un for
+                    // tengo entendido que esto coloca la posición de los objetos en los objetos obteniéndola
+                    // desde los sockekts
 
                     ManejoJsonSingleton.getInstance().Next();
                 }
